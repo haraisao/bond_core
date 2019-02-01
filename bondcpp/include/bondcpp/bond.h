@@ -41,6 +41,7 @@
 #include <bondcpp/timeout.h>
 #include <bond/Constants.h>
 #include <bond/Status.h>
+#include "bondcpp/bond_macro.h"
 #include "BondSM_sm.h"
 
 #include <string>
@@ -65,35 +66,49 @@ public:
    * \param on_broken callback that will be called when the bond is broken.
    * \param on_formed callback that will be called when the bond is formed.
    */
+  BONDCPP_DECL
   Bond(const std::string &topic, const std::string &id,
        boost::function<void(void)> on_broken = boost::function<void(void)>(),
        boost::function<void(void)> on_formed = boost::function<void(void)>());
 
   /** \brief Destructs the object, breaking the bond if it is still formed.
    */
+  BONDCPP_DECL
   ~Bond();
 
+  BONDCPP_DECL
   double getConnectTimeout() const { return connect_timeout_; }
+  BONDCPP_DECL
   void setConnectTimeout(double dur);
+  BONDCPP_DECL
   double getDisconnectTimeout() const { return disconnect_timeout_; }
+  BONDCPP_DECL
   void setDisconnectTimeout(double dur);
+  BONDCPP_DECL
   double getHeartbeatTimeout() const { return heartbeat_timeout_; }
+  BONDCPP_DECL
   void setHeartbeatTimeout(double dur);
+  BONDCPP_DECL
   double getHeartbeatPeriod() const { return heartbeat_period_; }
+  BONDCPP_DECL
   void setHeartbeatPeriod(double dur);
 
+  BONDCPP_DECL
   void setCallbackQueue(ros::CallbackQueueInterface *queue);
 
   /** \brief Starts the bond and connects to the sister process.
    */
+  BONDCPP_DECL
   void start();
 
   /** \brief Sets the formed callback.
    */
+  BONDCPP_DECL
   void setFormedCallback(boost::function<void(void)> on_formed);
 
   /** \brief Sets the broken callback
    */
+  BONDCPP_DECL
   void setBrokenCallback(boost::function<void(void)> on_broken);
 
   /** \brief Blocks until the bond is formed for at most 'duration'.
@@ -101,6 +116,7 @@ public:
    * \param timeout Maximum duration to wait.  If -1 then this call will not timeout.
    * \return true iff the bond has been formed.
    */
+  BONDCPP_DECL
   bool waitUntilFormed(ros::Duration timeout = ros::Duration(-1));
 
   /** \brief Blocks until the bond is formed for at most 'duration'.
@@ -108,6 +124,7 @@ public:
    * \param timeout Maximum duration to wait.  If -1 then this call will not timeout.
    * \return true iff the bond has been formed.
    */
+  BONDCPP_DECL
   bool waitUntilFormed(ros::WallDuration timeout = ros::WallDuration(-1));
 
   /** \brief Blocks until the bond is broken for at most 'duration'.
@@ -115,6 +132,7 @@ public:
    * \param timeout Maximum duration to wait.  If -1 then this call will not timeout.
    * \return true iff the bond has been broken, even if it has never been formed.
    */
+  BONDCPP_DECL
   bool waitUntilBroken(ros::Duration timeout = ros::Duration(-1));
 
   /** \brief Blocks until the bond is broken for at most 'duration'.
@@ -122,15 +140,18 @@ public:
    * \param timeout Maximum duration to wait.  If -1 then this call will not timeout.
    * \return true iff the bond has been broken, even if it has never been formed.
    */
+  BONDCPP_DECL
   bool waitUntilBroken(ros::WallDuration timeout = ros::WallDuration(-1));
 
   /** \brief Indicates if the bond is broken
    * \return true iff the bond has been broken.
    */
+  BONDCPP_DECL
   bool isBroken();
 
   /** \brief Breaks the bond, notifying the other process.
    */
+  BONDCPP_DECL
   void breakBond();
 
   std::string getTopic() { return topic_; }
@@ -186,8 +207,9 @@ private:
 
 
 // Internal use only
-struct BondSM
+class BondSM
 {
+public:
   BondSM(bond::Bond *b_) : b(b_) {}
   void Connected();
   void SisterDied();
